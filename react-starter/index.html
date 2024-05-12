@@ -17,10 +17,10 @@
 <body>
     <div id="app"></div>
     <script>
-        function displayMessage(message) {
-            return React.createElement('div', { className: 'bold-text' }, message);
+        function Message(props) {
+            return React.createElement('div', { className: 'bold-text' }, props.message);
         }
-        let helloWorldElement = displayMessage('Hello World');
+        let helloWorldElement = React.createElement(Message, { message: 'Hello World' });
         console.log(helloWorldElement)
         ReactDOM.createRoot(document.getElementById('app')).render(helloWorldElement);
     </script>
