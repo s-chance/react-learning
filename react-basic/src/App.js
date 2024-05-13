@@ -84,6 +84,26 @@ function App() {
     }
   }
 
+  // 发表评论
+  const [content, setContent] = useState('')
+
+  const handlePublish = () => {
+    setCommentList([
+      ...commentList,
+      {
+        rpid: 5,
+        user: {
+          uid: '12121246',
+          avatar: 'https://example.com/',
+          uname: '小刚',
+        },
+        content: content,
+        ctime: '2020-01-01 12:44:00',
+        like: 7,
+      },
+    ])
+  }
+
   return (
     <div className='app'>
       <div className='reply-navigation'>
@@ -108,7 +128,27 @@ function App() {
       </div>
 
       <div className='reply-warp'>
-        <div className='box-normal'></div>
+        <div className='box-normal'>
+          {/* 当前用户头像 */}
+          <div className='reply-box-avatar'>
+            <div className='bili-avatar'>
+              <img className='bili-avatar-img' src={user.avatar} alt='用户头像' />
+            </div>
+          </div>
+          <div className='reply-box-warp'>
+            {/* 评论框 */}
+            <textarea
+              className='reply-box-textarea'
+              placeholder='发表一条友善的评论'
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            {/* 发布按钮 */}
+            <div className='reply-box-send'>
+              <div className='send-text' onClick={handlePublish}>发布</div>
+            </div>
+          </div>
+        </div>
 
         {/* 评论列表 */}
         <div className='reply-list'>
