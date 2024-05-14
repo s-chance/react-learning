@@ -2,6 +2,8 @@ import { useState } from 'react'
 import './index.css'
 import _ from 'lodash'
 import classNames from 'classnames'
+import { v4 as uuidV4 } from 'uuid'
+import  dayjs from 'dayjs'
 
 // 评论列表数据
 const list = [
@@ -91,14 +93,14 @@ function App() {
     setCommentList([
       ...commentList,
       {
-        rpid: 5,
+        rpid: uuidV4(), // 随机id
         user: {
           uid: '12121246',
           avatar: 'https://example.com/',
           uname: '小刚',
         },
         content: content,
-        ctime: '2020-01-01 12:44:00',
+        ctime: dayjs().format('MM-DD HH:mm'), // 格式化 月-日 时:分
         like: 7,
       },
     ])
