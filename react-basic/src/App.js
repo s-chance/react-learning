@@ -76,6 +76,41 @@ function useGetList() {
   }
 }
 
+// 封装Item组件
+function Item({ item, onDel }) {
+  return (
+    <div className='reply-item'>
+      {/* 头像 */}
+      <div className='root-reply-avatar'>
+        <div className='bili-avatar'>
+          <img className='bili-avatar-img' alt='' src={item.user.avatar} />
+        </div>
+      </div>
+
+      <div className='content-warp'>
+        {/* 用户名 */}
+        <div className='user-info'>
+          <div className='user-name'>{item.user.uname}</div>
+        </div>
+        {/* 评论内容 */}
+        <div className='root-reply'>
+          <span className='reply-content'>{item.content}</span>
+          <div className='reply-info'>
+            {/* 评论时间 */}
+            <span className='reply-time'>{item.ctime}</span>
+            {/* 评论数量 */}
+            <span className='trply-time'>点赞数:{item.like}</span>
+            {/* 条件：user.uid === item.user.uid */}
+            {user.uid === item.user.uid &&
+              <span className='delete-btn' onClick={() => onDel(item.rpid)}>删除</span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function App() {
   // 渲染评论列表
   // 1. 使用useState维护list
@@ -114,11 +149,7 @@ function App() {
       ...commentList,
       {
         rpid: uuidV4(), // 随机id
-        user: {
-          uid: '12121246',
-          avatar: 'https://example.com/',
-          uname: '小刚',
-        },
+        user: user,
         content: content,
         ctime: dayjs().format('MM-DD HH:mm'), // 格式化 月-日 时:分
         like: 7,
@@ -182,37 +213,7 @@ function App() {
         <div className='reply-list'>
           {/* 评论项 */}
           {/* 2. 使用map方法对list数据进行遍历渲染 */}
-          {commentList.map(item => (
-            <div key={item.rpid} className='reply-item'>
-              {/* 头像 */}
-              <div className='root-reply-avatar'>
-                <div className='bili-avatar'>
-                  <img className='bili-avatar-img' alt='' src={item.user.avatar} />
-                </div>
-              </div>
-
-              <div className='content-warp'>
-                {/* 用户名 */}
-                <div className='user-info'>
-                  <div className='user-name'>{item.user.uname}</div>
-                </div>
-                {/* 评论内容 */}
-                <div className='root-reply'>
-                  <span className='reply-content'>{item.content}</span>
-                  <div className='reply-info'>
-                    {/* 评论时间 */}
-                    <span className='reply-time'>{item.ctime}</span>
-                    {/* 评论数量 */}
-                    <span className='trply-time'>点赞数:{item.like}</span>
-                    {/* 条件：user.uid === item.user.uid */}
-                    {user.uid === item.user.uid &&
-                      <span className='delete-btn' onClick={() => handleDel(item.rpid)}>删除</span>
-                    }
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+          {commentList.map(item => <Item key={item.rpid} item={item} onDel={handleDel} />)}
         </div>
 
       </div>
