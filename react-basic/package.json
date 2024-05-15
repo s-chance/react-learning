@@ -7,10 +7,12 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "classnames": "^2.5.1",
+    "dayjs": "^1.11.11",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
+    "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -39,6 +41,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",
+    "json-server": "1.0.0-beta.0",
     "postcss": "^8.4.38",
     "postcss-import": "^16.1.0",
     "prettier": "^3.2.5",
