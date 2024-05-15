@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './index.css'
 import _ from 'lodash'
 import classNames from 'classnames'
 import { v4 as uuidV4 } from 'uuid'
 import dayjs from 'dayjs'
+import axios from 'axios'
 
 // 评论列表数据
 const list = [
@@ -55,13 +56,31 @@ const tabs = [
   { type: 'time', text: '最新' }
 ]
 
+function useGetList() {
+  // 获取接口数据渲染
+  const [commentList, setCommentList] = useState([])
 
+  useEffect(() => {
+    // 请求数据
+    async function getList() {
+      // axios请求数据
+      const res = await axios.get('http://localhost:3004/list')
+      setCommentList(res.data)
+    }
+    getList()
+  }, [])
+
+  return {
+    commentList,
+    setCommentList
+  }
+}
 
 function App() {
   // 渲染评论列表
   // 1. 使用useState维护list
-  const [commentList, setCommentList] = useState(_.orderBy(list, 'like', 'desc'))
-
+  // const [commentList, setCommentList] = useState(_.orderBy(list, 'like', 'desc'))
+  const { commentList, setCommentList } = useGetList()
 
   // 删除功能
   const handleDel = (id) => {
