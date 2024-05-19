@@ -1,0 +1,32 @@
+{
+  "ka": [
+    {
+      "type": "pay",
+      "money": -99,
+      "date": "2017-01-01 12:00:00",
+      "useFor": "drinks",
+      "id": 1
+    },
+    {
+      "type": "pay",
+      "money": -88,
+      "date": "2017-01-01 12:01:22",
+      "useFor": "longdistance",
+      "id": 2
+    },
+    {
+      "type": "pay",
+      "money": -77,
+      "date": "2017-01-01 12:02:33",
+      "useFor": "food",
+      "id": 3
+    },
+    {
+      "type": "pay",
+      "money": -66,
+      "date": "2017-01-01 12:03:44",
+      "useFor": "drinks",
+      "id": 4
+    }
+  ]
+}
