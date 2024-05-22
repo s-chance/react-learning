@@ -52,6 +52,18 @@ const Month = () => {
         setCurrentMonthList(monthGroup[formatDate] ?? [])
         setCurrentDate(formatDate)
     }
+
+    // 当前月按照日来做分组
+    const dayGroup = useMemo(() => {
+        // 返回计算后的数据
+        const groupData = _.groupBy(currentMonthList, item => dayjs(item.date).format('YYYY-MM-DD'))
+        const keys = Object.keys(groupData)
+        return {
+            groupData,
+            keys
+        }
+    }, [currentMonthList])
+
     return (
         <div className="monthlyBill">
             <NavBar className="nav" backArrow={false}>
@@ -94,7 +106,11 @@ const Month = () => {
                         max={new Date()} />
                 </div>
                 {/* 单日列表统计 */}
-                <DailyBill />
+                {
+                    dayGroup.keys.map(key => {
+                        return <DailyBill key={key} date={key} billList={dayGroup.groupData[key]} />
+                    })
+                }
             </div>
         </div>
     )
