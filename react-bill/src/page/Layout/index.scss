@@ -1,11 +1,11 @@
 .layout {
   .container {
-    position: fixed;
+    position: flex;
     top: 0;
     bottom: 50px;
   }
   .footer {
-    position: fixed;
+    position: flex;
     bottom: 0;
     width: 100%;
   }
