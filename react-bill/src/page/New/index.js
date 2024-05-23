@@ -5,11 +5,35 @@ import { billListData } from "@/contants"
 import Icon from "@/components/Icon"
 import './index.scss'
 import { useState } from "react"
+import { addBillList } from "@/store/modules/billStore"
+import { useDispatch } from "react-redux"
 
 const New = () => {
     const navigate = useNavigate()
     // 控制收入支出的状态
     const [billType, setBillType] = useState('pay') // pay: 支出, income: 收入
+
+    // 收集表单金额
+    const [money, setMoney] = useState(0)
+    const moneyChange = (value) => {
+        setMoney(value)
+    }
+
+    // 收集账单类型
+    const [useFor, setUseFor] = useState('')
+    const dispatch = useDispatch()
+    // 保存账单
+    const saveBill = () => {
+        // 收集表单数据
+        const data = {
+            type: billType,
+            money: billType === 'pay' ? -money : +money,
+            date: new Date(),
+            useFor: useFor
+        }
+        console.log(data)
+        dispatch(addBillList(data))
+    }
     return (
         <div className="keepAccounts">
             <NavBar className="nav" onBack={() => navigate(-1)}>
@@ -50,6 +74,8 @@ const New = () => {
                                 className="input"
                                 placeholder="0.00"
                                 type="number"
+                                value={money}
+                                onChange={moneyChange}
                             />
                             <span className="iconYuan">￥</span>
                         </div>
@@ -72,6 +98,7 @@ const New = () => {
                                                 ''
                                             )}
                                             key={item.type}
+                                            onClick={() => setUseFor(item.type)}
                                         >
                                             <div className="icon">
                                                 <Icon type={item.type} />
@@ -87,7 +114,7 @@ const New = () => {
             </div>
 
             <div className="btns">
-                <Button className="btn save">
+                <Button className="btn save" onClick={saveBill}>
                     保存
                 </Button>
             </div>
