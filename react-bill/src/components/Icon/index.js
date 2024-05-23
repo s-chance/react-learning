@@ -19,8 +19,9 @@ const Icon = ({ type }) => {
         { salary: 'https://www.iconninja.com/files/340/421/114/currency-finance-financial-business-salary-money-coin-stroke-icon.svg' },
         { overtimepay: 'https://www.iconninja.com/files/627/469/96/money-icon.svg' },
         { bonus: 'https://www.iconninja.com/files/485/374/476/game-star-bonus-icon.svg' },
+        { financial: 'https://www.iconninja.com/files/82/436/22/financial-money-marketing-ecommerce-conversion-icon.png' },
+        { gift: 'https://www.iconninja.com/files/632/354/483/gift-icon.svg' },
         { calendar: 'https://www.iconninja.com/files/724/88/879/calendar-icon.svg' },
-
     ]
     return (
         <img
