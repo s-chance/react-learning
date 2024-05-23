@@ -1,4 +1,4 @@
-const billListData = {
+export const billListData = {
     pay: [
         {
             type: 'foods',
