@@ -1,6 +1,7 @@
 import { Dispatch, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { request } from "@/utils";
 import { LoginForm } from "@/pages/Login/types";
+import { setToken as _setToken, getToken } from "@/utils";
 
 interface UserState {
   token: string;
@@ -9,11 +10,12 @@ interface UserState {
 const userStore = createSlice({
   name: "user",
   initialState: {
-    token: "",
+    token: getToken() || "",
   } as UserState,
   reducers: {
     setToken(state, action: PayloadAction<string>) {
       state.token = action.payload;
+      _setToken(action.payload);
     },
   },
 });
