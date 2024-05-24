@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 
 const request: AxiosInstance = axios.create({
-  baseURL: "",
+  baseURL: "http://127.0.0.1:4523/m1/4549877-0-default/",
   timeout: 5000,
 });
 

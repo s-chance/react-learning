@@ -1,16 +1,17 @@
 import { Avatar, Button, Card, Form, FormProps, Input } from "antd";
 import "./index.scss";
 import avatar from "@/assets/avatar.avif";
+import { useUserDispatch } from "@/hooks";
+import { fetchLogin } from "@/store/modules/user";
+import { LoginForm as FieldType } from "@/pages/Login/types";
 
-type FieldType = {
-  phone: string;
-  code: string;
-};
-
-const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-  console.log(values);
-};
 const Login = () => {
+  const dispatch = useUserDispatch();
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+    console.log(values);
+    dispatch(fetchLogin(values));
+  };
+
   return (
     <div className="login">
       <Card className="login-container">
