@@ -1,15 +1,19 @@
-import { Avatar, Button, Card, Form, FormProps, Input } from "antd";
+import { Avatar, Button, Card, Form, FormProps, Input, message } from "antd";
 import "./index.scss";
 import avatar from "@/assets/avatar.avif";
 import { useUserDispatch } from "@/hooks";
 import { fetchLogin } from "@/store/modules/user";
 import { LoginForm as FieldType } from "@/pages/Login/types";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useUserDispatch();
+  const navigate = useNavigate();
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     console.log(values);
     dispatch(fetchLogin(values));
+    navigate("/");
+    message.success("登录成功");
   };
 
   return (
