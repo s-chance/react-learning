@@ -1,5 +1,5 @@
 import { Dispatch, PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { request } from "@/utils";
+import { removeToken, request } from "@/utils";
 import { LoginForm } from "@/pages/Login/types";
 import { setToken as _setToken, getToken } from "@/utils";
 
@@ -26,7 +26,7 @@ const userStore = createSlice({
   initialState: {
     token: getToken() || "",
     userInfo: {},
-  } as UserState,
+  },
   reducers: {
     setToken(state, action: PayloadAction<string>) {
       state.token = action.payload;
@@ -35,10 +35,15 @@ const userStore = createSlice({
     setUserInfo(state, action: PayloadAction<UserInfo>) {
       state.userInfo = action.payload;
     },
+    clearUserInfo(state) {
+      state.token = "";
+      state.userInfo = {};
+      removeToken();
+    },
   },
 });
 
-const { setToken, setUserInfo } = userStore.actions;
+const { setToken, setUserInfo, clearUserInfo } = userStore.actions;
 
 const userReducer = userStore.reducer;
 
@@ -56,6 +61,6 @@ const fetchUserInfo = () => {
   };
 };
 
-export { fetchLogin, fetchUserInfo, setToken };
+export { fetchLogin, fetchUserInfo, clearUserInfo };
 
 export default userReducer;
