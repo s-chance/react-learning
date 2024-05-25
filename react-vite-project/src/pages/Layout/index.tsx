@@ -8,31 +8,35 @@ import { request } from "@/utils";
 import { Avatar, Layout, Menu, Popconfirm } from "antd";
 import { useEffect } from "react";
 import "./index.scss";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const { Header, Sider } = Layout;
 
 const items = [
   {
     label: "Home",
-    key: "1",
+    key: "/",
     icon: <HomeOutlined />,
   },
   {
     label: "article",
-    key: "2",
+    key: "/article",
     icon: <DiffOutlined />,
   },
   {
-    label: "new",
-    key: "3",
+    label: "publish",
+    key: "/publish",
     icon: <EditOutlined />,
   },
 ];
 
 const Main = () => {
-  useEffect(() => {
-    request.get("/test");
-  }, []);
+  const navigate = useNavigate();
+  const onMenuClick = ({ key }: { key: string }) => {
+    const path = key;
+    localStorage.setItem("selectedKey", path);
+    navigate(path);
+  };
   return (
     <Layout>
       <Header className="header">
@@ -52,13 +56,14 @@ const Main = () => {
           <Menu
             mode="inline"
             theme="dark"
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={[localStorage.getItem("selectedKey") || "/"]}
+            onClick={onMenuClick}
             items={items}
             style={{ height: "100%", borderRight: 0 }}
           ></Menu>
         </Sider>
         <Layout className="layout-content" style={{ padding: 20 }}>
-          内容
+          <Outlet />
         </Layout>
       </Layout>
     </Layout>
