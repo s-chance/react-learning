@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ant-design/icons':
+        specifier: ^5.3.7
+        version: 5.3.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@reduxjs/toolkit':
         specifier: ^2.2.5
         version: 2.2.5(react-redux@9.1.2(@types/react@18.3.2)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
@@ -17,6 +20,9 @@ importers:
       axios:
         specifier: ^1.7.2
         version: 1.7.2
+      normalize.css:
+        specifier: ^8.0.1
+        version: 8.0.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -1105,6 +1111,9 @@ packages:
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
+
+  normalize.css@8.0.1:
+    resolution: {integrity: sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==}
 
   once@1.4.0:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
@@ -2737,6 +2746,8 @@ snapshots:
   node-releases@2.0.14: {}
 
   normalize-path@3.0.0: {}
+
+  normalize.css@8.0.1: {}
 
   once@1.4.0:
     dependencies:
