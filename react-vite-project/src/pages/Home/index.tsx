@@ -1,42 +1,20 @@
-import * as echarts from "echarts/core";
-import { GridComponent, GridComponentOption } from "echarts/components";
-import { BarChart, BarSeriesOption } from "echarts/charts";
-import { CanvasRenderer } from "echarts/renderers";
-import { useEffect, useRef } from "react";
-
-echarts.use([GridComponent, BarChart, CanvasRenderer]);
-
-type EChartsOption = echarts.ComposeOption<
-  GridComponentOption | BarSeriesOption
->;
-
-const option: EChartsOption = {
-  xAxis: {
-    type: "category",
-    data: ["Vue", "React", "Angular"],
-  },
-  yAxis: {
-    type: "value",
-  },
-  series: [
-    {
-      data: [10, 40, 70],
-      type: "bar",
-    },
-  ],
-};
+import BasicBarChart from "./components/BasicBarChart";
 
 const Home = () => {
-  const chartRef = useRef(null);
+  const xAxisData = ["Vue", "React", "Angular"];
 
-  useEffect(() => {
-    const chartDom = chartRef.current;
-    const myChart = echarts.init(chartDom);
-    option && myChart.setOption(option);
-  });
   return (
     <div>
-      <div ref={chartRef} style={{ width: "500px", height: "400px" }}></div>
+      <BasicBarChart
+        title={"前端框架使用量"}
+        xAxisData={xAxisData}
+        seriesData={[90, 90, 70]}
+      />
+      <BasicBarChart
+        title={"前端框架满意度"}
+        xAxisData={xAxisData}
+        seriesData={[90, 90, 60]}
+      />
     </div>
   );
 };
