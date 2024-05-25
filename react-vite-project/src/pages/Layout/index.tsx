@@ -9,6 +9,8 @@ import { Avatar, Layout, Menu, Popconfirm } from "antd";
 import { useEffect } from "react";
 import "./index.scss";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { fetchUserInfo } from "@/store/modules/user";
+import { useUserDispatch, useUserSelector } from "@/hooks";
 
 const { Header, Sider } = Layout;
 
@@ -40,12 +42,19 @@ const Main = () => {
   const location = useLocation();
   const selectedKey = location.pathname;
 
+  const dispatch = useUserDispatch();
+  useEffect(() => {
+    dispatch(fetchUserInfo());
+  }, [dispatch]);
+
+  const user = useUserSelector();
+
   return (
     <Layout>
       <Header className="header">
         <Avatar className="avatar" />
         <div className="user-info">
-          <span className="user-name">user</span>
+          <span className="user-name">{user.userInfo.name}</span>
           <span className="user-logout">
             <Popconfirm title="是否确认退出？" okText="退出" cancelText="取消">
               <LogoutOutlined />
