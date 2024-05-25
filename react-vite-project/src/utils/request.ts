@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import { getToken } from "./token";
+import { getToken, removeToken } from "./token";
+import router from "@/router";
 
 const request: AxiosInstance = axios.create({
   baseURL: "http://127.0.0.1:4523/m1/4549877-0-default/",
@@ -26,6 +27,10 @@ request.interceptors.response.use(
     return response.data;
   },
   (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      removeToken();
+      router.navigate("/login");
+    }
     return Promise.reject(error);
   }
 );
