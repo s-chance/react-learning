@@ -8,7 +8,7 @@ import { request } from "@/utils";
 import { Avatar, Layout, Menu, Popconfirm } from "antd";
 import { useEffect } from "react";
 import "./index.scss";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const { Header, Sider } = Layout;
 
@@ -34,9 +34,12 @@ const Main = () => {
   const navigate = useNavigate();
   const onMenuClick = ({ key }: { key: string }) => {
     const path = key;
-    localStorage.setItem("selectedKey", path);
     navigate(path);
   };
+
+  const location = useLocation();
+  const selectedKey = location.pathname;
+
   return (
     <Layout>
       <Header className="header">
@@ -56,7 +59,7 @@ const Main = () => {
           <Menu
             mode="inline"
             theme="dark"
-            defaultSelectedKeys={[localStorage.getItem("selectedKey") || "/"]}
+            defaultSelectedKeys={[selectedKey]}
             onClick={onMenuClick}
             items={items}
             style={{ height: "100%", borderRight: 0 }}
