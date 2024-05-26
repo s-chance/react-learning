@@ -1,6 +1,30 @@
 import { Breadcrumb, Button, Card, Form, Input, Select, Space } from "antd";
 import { Link } from "react-router-dom";
 import "./index.scss";
+import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
+import { LexicalComposer } from "@lexical/react/LexicalComposer";
+import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { ContentEditable } from "@lexical/react/LexicalContentEditable";
+import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
+import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
+
+import Theme from "./Theme";
+import ToolbarPlugin from "./plugins/ToolbarPlugin";
+
+const Placeholder = () => {
+  return <div className="editor-placeholder">Enter some rich text...</div>;
+};
+
+const onError = (error: Error) => {
+  console.error(error);
+};
+
+const initialConfig = {
+  namespace: "default",
+  nodes: [],
+  onError,
+  theme: Theme,
+};
 
 const Publish = () => {
   return (
@@ -37,7 +61,27 @@ const Publish = () => {
             label="内容"
             name="content"
             rules={[{ required: true, message: "请输入内容" }]}
-          ></Form.Item>
+          >
+            <LexicalComposer initialConfig={initialConfig}>
+              <div className="editor-container">
+                <div className="editor-toolbar">
+                  <ToolbarPlugin />
+                </div>
+
+                <div className="editor-inner">
+                  <RichTextPlugin
+                    contentEditable={
+                      <ContentEditable className="editor-input" />
+                    }
+                    placeholder={<Placeholder />}
+                    ErrorBoundary={LexicalErrorBoundary}
+                  />
+                  <HistoryPlugin />
+                  <AutoFocusPlugin />
+                </div>
+              </div>
+            </LexicalComposer>
+          </Form.Item>
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
               <Button size="large" type="primary" htmlType="submit">
