@@ -10,6 +10,8 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
 import Theme from "./Theme";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
+import { useEffect, useState } from "react";
+import { getChannelApi } from "@/apis/article";
 
 const Placeholder = () => {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -27,6 +29,24 @@ const initialConfig = {
 };
 
 const Publish = () => {
+  type ChannelsType = [
+    {
+      id: string;
+      name: string;
+    }
+  ];
+  const [channelList, setChannelList] = useState<ChannelsType>([
+    { id: "", name: "" },
+  ]);
+
+  useEffect(() => {
+    const getChannelList = async () => {
+      const res = await getChannelApi();
+      setChannelList(res.data.channels);
+    };
+    getChannelList();
+  }, []);
+
   return (
     <div className="publish">
       <Card
@@ -54,7 +74,11 @@ const Publish = () => {
             rules={[{ required: true, message: "请选择频道" }]}
           >
             <Select placeholder="请选择文章频道" style={{ width: 400 }}>
-              <Select.Option value={1}>前端</Select.Option>
+              {channelList.map((item) => (
+                <Select.Option key={item.id} value={item.id}>
+                  {item.name}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
