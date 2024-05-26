@@ -12,6 +12,7 @@ import Theme from "./Theme";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
 import { useEffect, useState } from "react";
 import { getChannelApi } from "@/apis/article";
+import EditorOnChangePlugin from "./plugins/EditorOnChangePlugin";
 
 const Placeholder = () => {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -47,6 +48,24 @@ const Publish = () => {
     getChannelList();
   }, []);
 
+  const [form] = Form.useForm();
+
+  const onChange = (content: string) => {
+    if (content !== "") {
+      form.setFieldsValue({ content: content });
+    }
+  };
+
+  type FormType = {
+    title: string;
+    channel_id: string;
+    content: string;
+  };
+
+  const onFinish = (formValue: FormType) => {
+    console.log(formValue);
+  };
+
   return (
     <div className="publish">
       <Card
@@ -57,9 +76,12 @@ const Publish = () => {
         }
       >
         <Form
+          form={form}
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ type: 1 }}
+          validateTrigger="onBlur"
+          onFinish={onFinish}
         >
           <Form.Item
             label="标题"
@@ -102,6 +124,7 @@ const Publish = () => {
                   />
                   <HistoryPlugin />
                   <AutoFocusPlugin />
+                  <EditorOnChangePlugin onChange={onChange} />
                 </div>
               </div>
             </LexicalComposer>
