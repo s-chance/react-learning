@@ -1,7 +1,8 @@
 import { Dispatch, PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { removeToken, request } from "@/utils";
+import { removeToken } from "@/utils";
 import { LoginForm } from "@/pages/Login/types";
 import { setToken as _setToken, getToken } from "@/utils";
+import { getUserInfoApi, loginApi } from "@/apis/user";
 
 export type UserInfo = {
   id: number;
@@ -49,14 +50,14 @@ const userReducer = userStore.reducer;
 
 const fetchLogin = (loginForm: LoginForm) => {
   return async (dispatch: Dispatch) => {
-    const res = await request.post("/authorizations", loginForm);
+    const res = await loginApi(loginForm);
     dispatch(setToken(res.data.token));
   };
 };
 
 const fetchUserInfo = () => {
   return async (dispatch: Dispatch) => {
-    const res = await request.get("/user/profile");
+    const res = await getUserInfoApi();
     dispatch(setUserInfo(res.data));
   };
 };

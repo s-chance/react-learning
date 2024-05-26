@@ -4,7 +4,6 @@ import {
   EditOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { request } from "@/utils";
 import { Avatar, Layout, Menu, Popconfirm } from "antd";
 import { useEffect } from "react";
 import "./index.scss";
