@@ -1,4 +1,14 @@
-import { Breadcrumb, Button, Card, Form, Input, Select, Space } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Form,
+  Input,
+  Radio,
+  Select,
+  Space,
+  Upload,
+} from "antd";
 import { Link } from "react-router-dom";
 import "./index.scss";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
@@ -14,6 +24,8 @@ import { useEffect, useState } from "react";
 import { createArticleApi, getChannelApi } from "@/apis/article";
 import EditorOnChangePlugin from "./plugins/EditorOnChangePlugin";
 import { FormType } from "./types";
+import { PlusOutlined } from "@ant-design/icons";
+import { UploadChangeParam, UploadFile } from "antd/es/upload";
 
 const Placeholder = () => {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -61,6 +73,12 @@ const Publish = () => {
     createArticleApi(formValue);
   };
 
+  const [imageList, setImageList] = useState<UploadFile[]>([]);
+
+  const handleUploadChange = (file: UploadChangeParam) => {
+    setImageList(file.fileList);
+  };
+
   return (
     <div className="publish">
       <Card
@@ -97,6 +115,26 @@ const Publish = () => {
                 </Select.Option>
               ))}
             </Select>
+          </Form.Item>
+          <Form.Item label="封面">
+            <Form.Item name="type">
+              <Radio.Group>
+                <Radio value={1}>单个</Radio>
+                <Radio value={2}>多个</Radio>
+                <Radio value={3}>无</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Upload
+              listType="picture-card"
+              showUploadList
+              action={"http://127.0.0.1:4523/m1/4549877-0-default/upload"}
+              name="image"
+              onChange={handleUploadChange}
+            >
+              <div style={{ marginTop: 8 }}>
+                <PlusOutlined />
+              </div>
+            </Upload>
           </Form.Item>
           <Form.Item
             label="内容"
