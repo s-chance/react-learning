@@ -5,6 +5,7 @@ import {
   Form,
   Input,
   Radio,
+  RadioChangeEvent,
   Select,
   Space,
   Upload,
@@ -79,6 +80,11 @@ const Publish = () => {
     setImageList(file.fileList);
   };
 
+  const [imageType, setImageType] = useState<number>();
+  const onTypeChange = ({ target }: RadioChangeEvent) => {
+    setImageType(target.value);
+  };
+
   return (
     <div className="publish">
       <Card
@@ -92,7 +98,7 @@ const Publish = () => {
           form={form}
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ type: 1 }}
+          initialValues={{ type: 0 }}
           validateTrigger="onBlur"
           onFinish={onFinish}
         >
@@ -118,23 +124,25 @@ const Publish = () => {
           </Form.Item>
           <Form.Item label="封面">
             <Form.Item name="type">
-              <Radio.Group>
+              <Radio.Group onChange={onTypeChange}>
                 <Radio value={1}>单个</Radio>
                 <Radio value={2}>多个</Radio>
                 <Radio value={3}>无</Radio>
               </Radio.Group>
             </Form.Item>
-            <Upload
-              listType="picture-card"
-              showUploadList
-              action={"http://127.0.0.1:4523/m1/4549877-0-default/upload"}
-              name="image"
-              onChange={handleUploadChange}
-            >
-              <div style={{ marginTop: 8 }}>
-                <PlusOutlined />
-              </div>
-            </Upload>
+            {(imageType === 1 || imageType === 2) && (
+              <Upload
+                listType="picture-card"
+                showUploadList
+                action={"http://127.0.0.1:4523/m1/4549877-0-default/upload"}
+                name="image"
+                onChange={handleUploadChange}
+              >
+                <div style={{ marginTop: 8 }}>
+                  <PlusOutlined />
+                </div>
+              </Upload>
+            )}
           </Form.Item>
           <Form.Item
             label="内容"
