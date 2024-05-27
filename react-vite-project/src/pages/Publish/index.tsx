@@ -11,8 +11,9 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import Theme from "./Theme";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
 import { useEffect, useState } from "react";
-import { getChannelApi } from "@/apis/article";
+import { createArticleApi, getChannelApi } from "@/apis/article";
 import EditorOnChangePlugin from "./plugins/EditorOnChangePlugin";
+import { FormType } from "./types";
 
 const Placeholder = () => {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -56,14 +57,8 @@ const Publish = () => {
     }
   };
 
-  type FormType = {
-    title: string;
-    channel_id: string;
-    content: string;
-  };
-
   const onFinish = (formValue: FormType) => {
-    console.log(formValue);
+    createArticleApi(formValue);
   };
 
   return (
