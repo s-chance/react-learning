@@ -137,6 +137,7 @@ const Publish = () => {
                 action={"http://127.0.0.1:4523/m1/4549877-0-default/upload"}
                 name="image"
                 onChange={handleUploadChange}
+                maxCount={imageType === 1 ? 1 : 3}
               >
                 <div style={{ marginTop: 8 }}>
                   <PlusOutlined />
