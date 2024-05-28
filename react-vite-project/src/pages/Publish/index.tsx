@@ -9,6 +9,7 @@ import {
   Select,
   Space,
   Upload,
+  message,
 } from "antd";
 import { Link } from "react-router-dom";
 import "./index.scss";
@@ -71,7 +72,16 @@ const Publish = () => {
   };
 
   const onFinish = (formValue: FormType) => {
-    createArticleApi(formValue);
+    const maxCount = imageType === 1 ? 1 : 3;
+    if (imageList.length > maxCount) return message.warning("图片数量过多");
+    const data = {
+      ...formValue,
+      cover: {
+        type: imageType || 0,
+        images: imageList.map((item) => item.response.data.url),
+      },
+    };
+    createArticleApi(data);
   };
 
   const [imageList, setImageList] = useState<UploadFile[]>([]);
