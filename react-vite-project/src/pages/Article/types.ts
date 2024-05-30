@@ -3,6 +3,6 @@ export type ArticleQueryParams = {
   channel_id?: string;
   begin_pubdate?: string;
   end_pubdate?: string;
-  page?: string;
-  per_page?: string;
+  page?: number;
+  per_page?: number;
 };

@@ -34,9 +34,9 @@ const Article = () => {
     {
       title: "封面",
       dataIndex: "cover",
-      render: (cover) => {
+      render: (cover: { images: string[] }) => {
         return (
-          <img src={cover.images[0] || img404} width={80} height={60} alt="" />
+          <img src={cover.images[0] || img404} width={60} height={60} alt="" />
         );
       },
     },
@@ -90,8 +90,8 @@ const Article = () => {
     channel_id: "",
     begin_pubdate: "",
     end_pubdate: "",
-    page: "1",
-    per_page: "10",
+    page: 1,
+    per_page: 10,
   });
 
   const [list, setList] = useState([]);
