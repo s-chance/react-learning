@@ -17,6 +17,8 @@ import img404 from "@/assets/404.jpg";
 import { useChannel } from "@/hooks";
 import { useEffect, useState } from "react";
 import { getArticleListApi } from "@/apis/article";
+import { ArticleQueryParams } from "./types";
+import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
 
@@ -83,16 +85,41 @@ const Article = () => {
     },
   ];
 
+  const [queryParams, setQueryParams] = useState<ArticleQueryParams>({
+    status: "",
+    channel_id: "",
+    begin_pubdate: "",
+    end_pubdate: "",
+    page: "1",
+    per_page: "10",
+  });
+
   const [list, setList] = useState([]);
   const [count, setCount] = useState(0);
   useEffect(() => {
     const getList = async () => {
-      const res = await getArticleListApi();
+      const res = await getArticleListApi(queryParams);
       setList(res.data.results);
       setCount(res.data.total_count);
     };
     getList();
-  }, []);
+  }, [queryParams]);
+
+  type ParamsType = {
+    status?: string;
+    channel_id?: string;
+    date?: [dayjs.Dayjs?, dayjs.Dayjs?];
+  };
+
+  const onFinish = (newParams: ParamsType) => {
+    setQueryParams({
+      ...queryParams,
+      status: newParams.status,
+      channel_id: newParams.channel_id,
+      begin_pubdate: newParams.date?.[0]?.format("YYYY-MM-DD"),
+      end_pubdate: newParams.date?.[1]?.format("YYYY-MM-DD"),
+    });
+  };
 
   return (
     <div>
@@ -104,20 +131,17 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form initialValues={{ status: '' }}>
+        <Form initialValues={{ status: "" }} onFinish={onFinish}>
           <Form.Item label="状态" name="status">
             <Radio.Group>
-              <Radio value={''}>全部</Radio>
+              <Radio value={""}>全部</Radio>
               <Radio value={0}>未发布</Radio>
               <Radio value={1}>已发布</Radio>
             </Radio.Group>
           </Form.Item>
 
           <Form.Item label="频道" name="channel_id">
-            <Select
-              placeholder="请选择频道"
-              style={{ width: 120 }}
-            >
+            <Select placeholder="请选择频道" style={{ width: 120 }}>
               {channelList.map((item) => (
                 <Select.Option key={item.id} value={item.id}>
                   {item.name}
