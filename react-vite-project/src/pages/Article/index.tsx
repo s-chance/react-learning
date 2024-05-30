@@ -9,6 +9,7 @@ import {
   Select,
   Space,
   Table,
+  Tag,
 } from "antd";
 import locale from "antd/es/date-picker/locale/zh_CN";
 import { Option } from "antd/es/mentions";
@@ -23,6 +24,11 @@ const { RangePicker } = DatePicker;
 const Article = () => {
   const { channelList } = useChannel();
 
+  const status: { [key: number]: React.ReactNode } = {
+    1: <Tag color="warning">待审核</Tag>,
+    2: <Tag color="success">审核通过</Tag>,
+  };
+
   const columns = [
     {
       title: "封面",
@@ -34,7 +40,13 @@ const Article = () => {
       },
     },
     { title: "标题", dataIndex: "title" },
-    { title: "状态", dataIndex: "status" },
+    {
+      title: "状态",
+      dataIndex: "status",
+      // data === 1 待审核
+      // data === 2 审核通过
+      render: (data: number) => status[data],
+    },
     { title: "发布时间", dataIndex: "pubdate" },
     { title: "阅读数", dataIndex: "read_count" },
     { title: "评论数", dataIndex: "comment_count" },
