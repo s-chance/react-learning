@@ -121,6 +121,13 @@ const Article = () => {
     });
   };
 
+  const onPageChange = (page: number) => {
+    setQueryParams({
+      ...queryParams,
+      page,
+    });
+  };
+
   return (
     <div>
       <Card
@@ -162,7 +169,16 @@ const Article = () => {
         </Form>
       </Card>
       <Card title={`根据筛选条件共查询到 ${count} 条结果: `}>
-        <Table rowKey="id" columns={columns} dataSource={list} />
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={list}
+          pagination={{
+            total: count,
+            pageSize: queryParams.per_page,
+            onChange: onPageChange,
+          }}
+        />
       </Card>
     </div>
   );
