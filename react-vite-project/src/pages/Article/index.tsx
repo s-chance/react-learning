@@ -14,10 +14,13 @@ import locale from "antd/es/date-picker/locale/zh_CN";
 import { Option } from "antd/es/mentions";
 import { Link } from "react-router-dom";
 import img404 from "@/assets/404.jpg";
+import { useChannel } from "@/hooks";
 
 const { RangePicker } = DatePicker;
 
 const Article = () => {
+  const { channelList } = useChannel();
+
   const columns = [
     {
       title: "封面",
@@ -91,8 +94,11 @@ const Article = () => {
               defaultValue="前端"
               style={{ width: 120 }}
             >
-              <Option value="后端">后端</Option>
-              <Option value="前端">前端</Option>
+              {channelList.map((item) => (
+                <Option key={item.id} value={item.id}>
+                  {item.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 

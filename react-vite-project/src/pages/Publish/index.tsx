@@ -22,12 +22,13 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
 import Theme from "./Theme";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
-import { useEffect, useState } from "react";
-import { createArticleApi, getChannelApi } from "@/apis/article";
+import { useState } from "react";
+import { createArticleApi } from "@/apis/article";
 import EditorOnChangePlugin from "./plugins/EditorOnChangePlugin";
 import { FormType } from "./types";
 import { PlusOutlined } from "@ant-design/icons";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
+import { useChannel } from "@/hooks";
 
 const Placeholder = () => {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -45,23 +46,7 @@ const initialConfig = {
 };
 
 const Publish = () => {
-  type ChannelsType = [
-    {
-      id: string;
-      name: string;
-    }
-  ];
-  const [channelList, setChannelList] = useState<ChannelsType>([
-    { id: "", name: "" },
-  ]);
-
-  useEffect(() => {
-    const getChannelList = async () => {
-      const res = await getChannelApi();
-      setChannelList(res.data.channels);
-    };
-    getChannelList();
-  }, []);
+  const { channelList } = useChannel();
 
   const [form] = Form.useForm();
 
