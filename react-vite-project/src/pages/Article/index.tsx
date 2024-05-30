@@ -13,7 +13,7 @@ import {
   Tag,
 } from "antd";
 import locale from "antd/es/date-picker/locale/zh_CN";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import img404 from "@/assets/404.jpg";
 import { useChannel } from "@/hooks";
 import { useEffect, useState } from "react";
@@ -24,6 +24,8 @@ import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 
 const Article = () => {
+  const navigate = useNavigate();
+
   const { channelList } = useChannel();
 
   const status: { [key: number]: React.ReactNode } = {
@@ -58,7 +60,12 @@ const Article = () => {
       render: (data: ArticleType) => {
         return (
           <Space size="middle">
-            <Button type="primary" shape="circle" icon={<EditOutlined />} />
+            <Button
+              type="primary"
+              shape="circle"
+              icon={<EditOutlined />}
+              onClick={() => navigate(`/publish?id=${data.id}`)}
+            />
             <Popconfirm
               title="删除文章"
               description="确认删除当前文章？"
