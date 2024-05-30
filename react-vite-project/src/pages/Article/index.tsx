@@ -15,6 +15,8 @@ import { Option } from "antd/es/mentions";
 import { Link } from "react-router-dom";
 import img404 from "@/assets/404.jpg";
 import { useChannel } from "@/hooks";
+import { useEffect, useState } from "react";
+import { getArticleListApi } from "@/apis/article";
 
 const { RangePicker } = DatePicker;
 
@@ -69,6 +71,18 @@ const Article = () => {
       title: "测试文章",
     },
   ];
+
+  const [list, setList] = useState([]);
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    const getList = async () => {
+      const res = await getArticleListApi();
+      setList(res.data.results);
+      setCount(res.data.total_count);
+    };
+    getList();
+  }, []);
+
   return (
     <div>
       <Card
@@ -113,8 +127,8 @@ const Article = () => {
           </Form.Item>
         </Form>
       </Card>
-      <Card title={`根据筛选条件共查询到 count 条结果: `}>
-        <Table rowKey="id" columns={columns} dataSource={data} />
+      <Card title={`根据筛选条件共查询到 ${count} 条结果: `}>
+        <Table rowKey="id" columns={columns} dataSource={list} />
       </Card>
     </div>
   );

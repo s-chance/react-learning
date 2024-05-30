@@ -1,3 +1,4 @@
+import { ArticleQueryParams } from "@/pages/Article/types";
 import { FormType } from "@/pages/Publish/types";
 import { request } from "@/utils";
 
@@ -13,5 +14,13 @@ export const createArticleApi = (data: FormType) => {
     url: "article",
     method: "post",
     data: data,
+  });
+};
+
+export const getArticleListApi = (params?: ArticleQueryParams) => {
+  return request({
+    url: "/articles",
+    method: "get",
+    params,
   });
 };
