@@ -5,6 +5,7 @@ import {
   Card,
   DatePicker,
   Form,
+  Popconfirm,
   Radio,
   Select,
   Space,
@@ -16,8 +17,8 @@ import { Link } from "react-router-dom";
 import img404 from "@/assets/404.jpg";
 import { useChannel } from "@/hooks";
 import { useEffect, useState } from "react";
-import { getArticleListApi } from "@/apis/article";
-import { ArticleQueryParams } from "./types";
+import { delArticleApi, getArticleListApi } from "@/apis/article";
+import { ArticleQueryParams, ArticleType } from "./types";
 import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
@@ -54,16 +55,24 @@ const Article = () => {
     { title: "点赞数", dataIndex: "like_count" },
     {
       title: "操作",
-      render: (data) => {
+      render: (data: ArticleType) => {
         return (
           <Space size="middle">
             <Button type="primary" shape="circle" icon={<EditOutlined />} />
-            <Button
-              type="primary"
-              danger
-              shape="circle"
-              icon={<DeleteOutlined />}
-            />
+            <Popconfirm
+              title="删除文章"
+              description="确认删除当前文章？"
+              onConfirm={() => onConfirm(data)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button
+                type="primary"
+                danger
+                shape="circle"
+                icon={<DeleteOutlined />}
+              />
+            </Popconfirm>
           </Space>
         );
       },
@@ -125,6 +134,13 @@ const Article = () => {
     setQueryParams({
       ...queryParams,
       page,
+    });
+  };
+
+  const onConfirm = async (data: ArticleType) => {
+    await delArticleApi(data.id);
+    setQueryParams({
+      ...queryParams,
     });
   };
 

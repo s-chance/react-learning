@@ -24,3 +24,10 @@ export const getArticleListApi = (params?: ArticleQueryParams) => {
     params,
   });
 };
+
+export const delArticleApi = (id: string) => {
+  return request({
+    url: `/articles/${id}`,
+    method: "delete",
+  });
+};
