@@ -12,7 +12,6 @@ import {
   Tag,
 } from "antd";
 import locale from "antd/es/date-picker/locale/zh_CN";
-import { Option } from "antd/es/mentions";
 import { Link } from "react-router-dom";
 import img404 from "@/assets/404.jpg";
 import { useChannel } from "@/hooks";
@@ -105,10 +104,10 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form initialValues={{ status: null }}>
+        <Form initialValues={{ status: '' }}>
           <Form.Item label="状态" name="status">
             <Radio.Group>
-              <Radio value={null}>全部</Radio>
+              <Radio value={''}>全部</Radio>
               <Radio value={0}>未发布</Radio>
               <Radio value={1}>已发布</Radio>
             </Radio.Group>
@@ -117,13 +116,12 @@ const Article = () => {
           <Form.Item label="频道" name="channel_id">
             <Select
               placeholder="请选择频道"
-              defaultValue="前端"
               style={{ width: 120 }}
             >
               {channelList.map((item) => (
-                <Option key={item.id} value={item.id}>
+                <Select.Option key={item.id} value={item.id}>
                   {item.name}
-                </Option>
+                </Select.Option>
               ))}
             </Select>
           </Form.Item>
