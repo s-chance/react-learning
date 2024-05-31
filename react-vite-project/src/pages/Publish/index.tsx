@@ -11,7 +11,7 @@ import {
   Upload,
   message,
 } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import "./index.scss";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
@@ -22,8 +22,8 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
 import Theme from "./Theme";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
-import { useState } from "react";
-import { createArticleApi } from "@/apis/article";
+import { useEffect, useState } from "react";
+import { createArticleApi, getArtcicleByIdApi } from "@/apis/article";
 import EditorOnChangePlugin from "./plugins/EditorOnChangePlugin";
 import { FormType } from "./types";
 import { PlusOutlined } from "@ant-design/icons";
@@ -80,6 +80,18 @@ const Publish = () => {
     setImageType(target.value);
   };
 
+  const [searchParams] = useSearchParams();
+  const articleId = searchParams.get("id");
+  useEffect(() => {
+    const getArticle = async () => {
+      if (articleId !== null) {
+        const res = await getArtcicleByIdApi(articleId);
+        form.setFieldsValue(res.data);
+      }
+    };
+    getArticle();
+  }, [articleId, form]);
+
   return (
     <div className="publish">
       <Card
@@ -111,7 +123,9 @@ const Publish = () => {
           >
             <Select placeholder="请选择文章频道" style={{ width: 400 }}>
               {channelList.map((item) => (
-                <Select.Option key={item.id} value={item.id}>
+                // 若后端定义channel_id为number类型，则此处使用Number转换
+                // 若后端定义channel_id为string类型，则此处不需要转换
+                <Select.Option key={item.id} value={Number(item.id)}>
                   {item.name}
                 </Select.Option>
               ))}

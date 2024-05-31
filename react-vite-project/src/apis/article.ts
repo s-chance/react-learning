@@ -31,3 +31,10 @@ export const delArticleApi = (id: string) => {
     method: "delete",
   });
 };
+
+export const getArtcicleByIdApi = (id: string) => {
+  return request({
+    url: `/articles/${id}`,
+    method: "get",
+  });
+};
