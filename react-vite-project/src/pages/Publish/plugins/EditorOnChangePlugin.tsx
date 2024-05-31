@@ -1,23 +1,15 @@
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { EditorState } from "lexical";
 import { useEffect } from "react";
-import { SerializedEditorState, SerializedLexicalNode } from "lexical";
 
-type onChangeType = (content: string) => void;
-
-interface NodeType extends SerializedLexicalNode {
-  children?: [{ text: string }];
-}
+type onChangeType = (editorState: EditorState) => void;
 
 const EditorOnChangePlugin = ({ onChange }: { onChange: onChangeType }) => {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
     return editor.registerUpdateListener(({ editorState }) => {
-      const editorStateJSON: SerializedEditorState<NodeType> =
-        editorState.toJSON();
-      const content =
-        editorStateJSON.root.children?.[0].children?.[0]?.text ?? "";
-      onChange(content);
+      onChange(editorState);
     });
   }, [editor, onChange]);
   return null;

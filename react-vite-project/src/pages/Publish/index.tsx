@@ -19,6 +19,8 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { HeadingNode } from "@lexical/rich-text";
 
 import Theme from "./Theme";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
@@ -34,6 +36,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import { useChannel } from "@/hooks";
 import dayjs from "dayjs";
+import { EditorState, ParagraphNode, TextNode } from "lexical";
 
 const Placeholder = () => {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -45,20 +48,35 @@ const onError = (error: Error) => {
 
 const initialConfig = {
   namespace: "default",
-  nodes: [],
+  nodes: [HeadingNode, ParagraphNode, TextNode],
   onError,
   theme: Theme,
+};
+
+const EditorComponent = ({ initialContent }: { initialContent: string }) => {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    if (initialContent !== "") {
+      editor.update(() => {
+        const editorState = editor.parseEditorState(initialContent);
+        editor.setEditorState(editorState);
+      });
+    }
+  }, [editor, initialContent]);
+
+  return null;
 };
 
 const Publish = () => {
   const { channelList } = useChannel();
 
   const [form] = Form.useForm();
+  const [initialContent, setInitialContent] = useState<string>("");
 
-  const onChange = (content: string) => {
-    if (content !== "") {
-      form.setFieldsValue({ content: content });
-    }
+  const onChange = (editorState: EditorState) => {
+    const editorStateJSON = editorState.toJSON();
+    form.setFieldsValue({ content: JSON.stringify(editorStateJSON) });
   };
 
   const onFinish = (formValue: FormType) => {
@@ -105,7 +123,7 @@ const Publish = () => {
     const getArticle = async () => {
       if (articleId !== null) {
         const res = await getArtcicleByIdApi(articleId);
-        const { cover } = res.data;
+        const { cover, content } = res.data;
         form.setFieldsValue({
           ...res.data,
           type: cover.type,
@@ -116,6 +134,7 @@ const Publish = () => {
             return { url };
           })
         );
+        setInitialContent(content);
       }
     };
     getArticle();
@@ -209,6 +228,7 @@ const Publish = () => {
                   <HistoryPlugin />
                   <AutoFocusPlugin />
                   <EditorOnChangePlugin onChange={onChange} />
+                  <EditorComponent initialContent={initialContent} />
                 </div>
               </div>
             </LexicalComposer>
