@@ -23,12 +23,17 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import Theme from "./Theme";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
 import { useEffect, useState } from "react";
-import { createArticleApi, getArtcicleByIdApi } from "@/apis/article";
+import {
+  createArticleApi,
+  getArtcicleByIdApi,
+  updateArticleApi,
+} from "@/apis/article";
 import EditorOnChangePlugin from "./plugins/EditorOnChangePlugin";
 import { FormType } from "./types";
 import { PlusOutlined } from "@ant-design/icons";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import { useChannel } from "@/hooks";
+import dayjs from "dayjs";
 
 const Placeholder = () => {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -63,10 +68,24 @@ const Publish = () => {
       ...formValue,
       cover: {
         type: imageType || 0,
-        images: imageList.map((item) => item.response.data.url),
+        images: imageList.map((item) => {
+          if (item.response?.data) {
+            return item.response.data.url;
+          } else {
+            return item.url;
+          }
+        }),
       },
     };
-    createArticleApi(data);
+    if (articleId) {
+      updateArticleApi({
+        ...data,
+        id: articleId,
+        pubdate: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      });
+    } else {
+      createArticleApi(data);
+    }
   };
 
   const [imageList, setImageList] = useState<UploadFile[]>([]);

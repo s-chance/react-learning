@@ -1,5 +1,5 @@
 import { ArticleQueryParams } from "@/pages/Article/types";
-import { FormType } from "@/pages/Publish/types";
+import { ArticleUpdateType, FormType } from "@/pages/Publish/types";
 import { request } from "@/utils";
 
 export const getChannelApi = () => {
@@ -11,9 +11,17 @@ export const getChannelApi = () => {
 
 export const createArticleApi = (data: FormType) => {
   return request({
-    url: "article",
+    url: "/articles",
     method: "post",
     data: data,
+  });
+};
+
+export const updateArticleApi = (data: ArticleUpdateType) => {
+  return request({
+    url: `/articles/${data.id}`,
+    method: "put",
+    data,
   });
 };
 
