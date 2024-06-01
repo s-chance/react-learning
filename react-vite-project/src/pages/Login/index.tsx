@@ -10,7 +10,7 @@ const Login = () => {
   const dispatch = useUserDispatch();
   const navigate = useNavigate();
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    console.log(values);
+    // console.log(values);
     await dispatch(fetchLogin(values));
     navigate("/");
     message.success("登录成功");

@@ -86,20 +86,20 @@ const Article = () => {
     },
   ];
 
-  const data = [
-    {
-      id: "8218",
-      comment_count: 0,
-      cover: {
-        images: [],
-      },
-      like_count: 0,
-      pubdate: "2021-10-20 10:00:00",
-      read_count: 12,
-      status: 2,
-      title: "测试文章",
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: "8218",
+  //     comment_count: 0,
+  //     cover: {
+  //       images: [],
+  //     },
+  //     like_count: 0,
+  //     pubdate: "2021-10-20 10:00:00",
+  //     read_count: 12,
+  //     status: 2,
+  //     title: "测试文章",
+  //   },
+  // ];
 
   const [queryParams, setQueryParams] = useState<ArticleQueryParams>({
     status: "",
