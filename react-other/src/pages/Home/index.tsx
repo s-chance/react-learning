@@ -14,7 +14,9 @@ const Home = () => {
           return (
             <Tabs.Tab title={item.name} key={item.id}>
               {/* list组件 */}
-              <HomeList channelId={item.id.toString()} />
+              <div className="listContainer">
+                <HomeList channelId={item.id.toString()} />
+              </div>
             </Tabs.Tab>
           );
         })}
