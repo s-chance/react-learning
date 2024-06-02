@@ -1,21 +1,37 @@
 import { useEffect } from "react";
-import { create } from "zustand";
+import { StateCreator, create } from "zustand";
 
-type Store = {
+type CounterStore = {
   count: number;
   inc: () => void;
+};
+
+type DataStore = {
   data: {
     id: string;
     name: string;
   }[];
-  fetchData: () => void;
+  fetchData: () => Promise<void>;
 };
+
+const createCounterStore: StateCreator<
+  CounterStore & DataStore,
+  [],
+  [],
+  CounterStore
+> = (set) => ({
+  count: 1,
+  inc: () => set((state: { count: number }) => ({ count: state.count + 1 })),
+});
 
 const URL = "https://example.com";
 
-const useStore = create<Store>()((set) => ({
-  count: 1,
-  inc: () => set((state) => ({ count: state.count + 1 })),
+const createDataStore: StateCreator<
+  CounterStore & DataStore,
+  [],
+  [],
+  DataStore
+> = (set) => ({
   data: [],
   fetchData: async () => {
     const res = await fetch(URL);
@@ -23,9 +39,16 @@ const useStore = create<Store>()((set) => ({
     console.log(jsonRes);
     set({ data: jsonRes.data.channels });
   },
-}));
+});
 
-function Counter() {
+const useStore = create<CounterStore & DataStore>()((...a) => {
+  return {
+    ...createCounterStore(...a),
+    ...createDataStore(...a),
+  };
+});
+
+function App() {
   const { count, inc, data, fetchData } = useStore();
   useEffect(() => {
     fetchData();
@@ -36,14 +59,6 @@ function Counter() {
       {data.map((item) => (
         <li key={item.id}>{item.name}</li>
       ))}
-    </div>
-  );
-}
-
-function App() {
-  return (
-    <div>
-      <Counter />
     </div>
   );
 }
